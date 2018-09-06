@@ -1,8 +1,9 @@
 def lines(a, b):
     """Return lines in both a and b"""
     common_lines = set()
-    lines_a = a.split()
-    lines_b = b.split()
+    lines_a = a.splitlines()
+    lines_b = b.splitlines()
+    #print(lines_a, lines_b)
     for line in lines_a:
         if line in lines_b:
             common_lines.add(line)
@@ -28,8 +29,8 @@ def substrings(a, b, n):
     """Return substrings of length n in both a and b"""
     common_strs = set()
 
-    substrs_a = [a[i:i+n] for i in range(len(a)-n)]
-    substrs_b = [b[i:i+n] for i in range(len(b)-n)]
+    substrs_a = [a[i:i+n] for i in range(len(a)-n+1)]
+    substrs_b = [b[i:i+n] for i in range(len(b)-n+1)]
 
     for substr in substrs_a:
         if substr in substrs_b:
