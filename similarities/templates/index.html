@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+    <div class="col">
+        <form action="/compare" enctype="multipart/form-data" method="post">
+            <h1>Compare</h1>
+            <p>Compare the similarity of two files.</p>
+            <hr>
+            <p>
+                <label for="file1"><b>File One</b></label>
+                <input type='file' placeholder='Choose file 1' name="file1" required></input>
+            </p>
+
+
+            <label for="file2"><b>File Two</b></label>
+            <input type="file" placeholder="Choose file 2" name="file2" required></input>
+
+            <fieldset>
+                <legend>Algorithm Options</legend>
+                <p>
+                    <input type="radio" name="algorithm", value="lines"><b>Compare lines in the two files</b><br>
+                </p>
+                <p>
+                    <input type="radio" name="algorithm", value="sentences"><b>Compare sentences in the two files</b><br>
+                </p>
+                <p>
+                    <input type="radio" name="algorithm", value="substrings"><b>Compare substrings in the two files</b><br>
+
+                    <label for="length">Length of the substrings</label>
+                    <input type="number" placeholder="length" name="length"></input>
+                </p>
+            </fieldset>
+
+            <p>
+                <button type="submit">Compare</button>
+            </p>
+
+        </form>
+    </div>
+{% endblock %}
