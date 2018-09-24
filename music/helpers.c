@@ -24,8 +24,7 @@ int count_steps(string note)
     int steps;
     // Notes in an octave
     const string NOTES[] = {"C", "C#", "D", "D#", "E",
-                            "F", "F#", "G", "G#", "A", "A#", "B"
-                            };
+                            "F", "F#", "G", "G#", "A", "A#", "B"};
 
     for(int i = 0, n=sizeof(NOTES) / sizeof(NOTES[0]); i < n; i++)
     {
@@ -83,6 +82,10 @@ int frequency(string fullnote)
         double base_freq = 440 * pow(2, (octave - 4));
         freq = (int) round(base_freq * pow(2, step / 12));
     }
+    else
+    {
+        printf("The note inputted is %s \nPlease double check the note format!", fullnote);
+    }
 
     return freq;
 }
@@ -90,7 +93,6 @@ int frequency(string fullnote)
 // Determines whether a string represents a rest
 bool is_rest(string s)
 {
-    //
     if (!strcmp(s, ""))
     {
         //printf("It is a rest!");

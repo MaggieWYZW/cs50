@@ -76,14 +76,14 @@ int main(int argc, char *argv[])
             fread(&triple, sizeof(RGBTRIPLE), 1, inptr);
 
             // change pixel RGP colour
-            // change all black pixels to white: test 1
+            // change all white pixels to black: test 1
             if (triple.rgbtGreen == 0xff && triple.rgbtBlue == 0xff && triple.rgbtRed == 0xff)
             {
                 triple.rgbtRed = 0x00;
                 triple.rgbtGreen = 0x00;
                 triple.rgbtBlue = 0x00;
             }
-            
+
             // write RGB triple to outfile
             fwrite(&triple, sizeof(RGBTRIPLE), 1, outptr);
         }
