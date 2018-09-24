@@ -3,7 +3,7 @@
 #ifndef HASH_DJB2
 #define HASH_DJB2
 
-unsigned long hash_djb2(char *str);
+unsigned long hash_djb2(const char *str);
 
 #endif
 

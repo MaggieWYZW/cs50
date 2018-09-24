@@ -3,50 +3,40 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
+#include <strings.h>
 #include <stdlib.h>
 
 #include "dictionary.h"
-#include "hash.h"
 
 // Node for linked list
 typedef struct node
 {
-    char word[LENGTH + 1];
-    struct node *next;
+    bool is_node;
+    struct node *children[27];
 }
 node;
 // Define a hashtable: array of nodes
-node *hashtable[HASHSIZE]; //hashtable size of 50
+node *root;
+
+int index(char c)
+{
+    if (c < 'z' && c > 'a')
+    {
+        return (int) c-'a';
+    }
+    else if (c == '\'')
+    {
+        return 26;
+    }
+    else
+    {
+        return (int) c-'A';
+    }
+}
 
 // Returns true if word is in dictionary else false
 bool check(const char *word)
 {
-    printf("------CHECK-------\n");
-    printf("word: %s \t", word);
-    char tmp[strlen(word)+1];
-    // convert the word into lower case
-    for (int i=0; i < strlen(word); i++)
-    {
-        tmp[i] = tolower(word[i]);
-    }
-    printf("tmp: %s \n", tmp);
-    // OR use strcasecmp()
-    // find where the word lies in the hashtable
-    node *head = hashtable[hash_djb2(&tmp[0])];
-    printf("check %i\n", (int) head);
-
-    node *cursor = head;
-    while (cursor != NULL)
-    {
-        if (!strcmp(cursor->word, word))
-        {
-            return true;
-        }
-        else
-        {
-            cursor = cursor->next;
-        }
-    }
     return false;
 }
 
@@ -66,27 +56,39 @@ bool load(const char *dictionary)
     char word[LENGTH+1];
     while (fscanf(file, "%s", word) != EOF)
     {
-        // Find the address of the hashtable
-        node *head = hashtable[hash_djb2(&word[0])];
-        printf("load %i\n", (int) head);
-
+        node *curser = root;
         // Create a new node
-        node *new_node = malloc(sizeof(node));
-        if (new_node == NULL)
+        for(int i = 0; i < strlen(word); i++)
         {
-            unload();
-            return false;
+            if (curser == NULL)
+            {
+                node *new_node = malloc(sizeof(node));
+                curser->children[index(word[i])] = new_node;
+            }
+            else if (curser->children[index(word[i])] == NULL && (i < strlen(word)-1))
+            {
+                node *new_node = malloc(sizeof(node));
+                curser->children[index(word[i])] = new_node;
+                curser = curser->children[index(word[i])];
+            }
+            else if ((i==strlen(word)-1) && curser->children[index(word[i])] == NULL)
+            {
+                node *new_node = malloc(sizeof(node));
+                curser->children[index(word[i])] = new_node;
+                curser->children[index(word[i])]->is_word = true;
+            }
+            else if (i==strlen(word)-1)
+            {
+                curser->is_word = true;
+            }
+            else
+            {
+                curser = curser->children[indes(word[i])];
+            }
         }
-        else
-        {
-            // Insert a word in the hashtable
-            // printf("%s\n", word);
-            strcpy(new_node->word, word);
-            new_node->next = head;
-            head = new_node;
-        }
-    }
 
+    }
+    fclose(file);
     return true;
 }
 
@@ -94,36 +96,14 @@ bool load(const char *dictionary)
 unsigned int size(void)
 {
     // If the dictionary is not loaded, return 0
-    if (hashtable[0] == NULL)
-    {
-        return 0;
-    }
-
     int counter = 0;
-    for (int i=0; i < HASHSIZE; i++)
-    {
-        node *cursor = hashtable[i];
-        while(cursor != NULL)
-        {
-            counter++;
-        }
-    }
     return counter;
 }
 
 // Unloads dictionary from memory, returning true if successful else false
 bool unload(void)
 {
-    for(int i = 0; i < HASHSIZE; i++)
-    {
-        node *cursor = hashtable[i];
-        while (cursor != NULL)
-        {
-            node *temp = cursor;
-            cursor = cursor->next;
-            free(temp);
-        }
-    }
+
     return true;
 }
 

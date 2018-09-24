@@ -1,7 +1,7 @@
 #include "hash.h"
 #include "dictionary.h"
 
-unsigned long hash_djb2(char *str)
+unsigned long hash_djb2(const char *str)
 {
     unsigned long hash = 5381;
     int c;
