@@ -8,14 +8,14 @@ CFLAGS = -fsanitize=signed-integer-overflow -fsanitize=undefined -ggdb3 -O0 -Qun
 EXE = speller
 
 # space-separated list of header files
-HDRS = dictionary.h hash.h
+HDRS = dictionary.h
 
 # space-separated list of libraries, if any,
 # each of which should be prefixed with -l
 LIBS =
 
 # space-separated list of source files
-SRCS = speller.c dictionary.c hash.c
+SRCS = speller.c dictionary.c
 
 # automatically generated list of object files
 OBJS = $(SRCS:.c=.o)
